@@ -2,7 +2,6 @@
 In this assignment, you will write a function named reverse(sentence, reverse_word) that takes two strings as an input and returns a new string where the first occurrence of replace_word has been reverted (i.e. spelled backwards).
 For example- 
 reverse("Python improves my mood very much", "mood") should return "Python improves my doom very much"
-
 """
 #Option 1
 
