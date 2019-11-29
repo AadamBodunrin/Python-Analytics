@@ -173,5 +173,23 @@ with open("sample_data.csv", 'r') as sample_data:
 print(data_tuples[0:10])
 
 
+#Getting Data Online Using the request library
+import requests 
+response = requests.get("http://www.epicurious.com/search/Tofu+Chili") #Use requests.get to access webpage
+print(type(response)) #View the type of response
+
+#To check if our action was successful i.e. 404 means page not found. 404 means page not found
+print(response.status_code) 
+
+#or
+if response.status_code == 200:
+	print("Success")
+else:
+	print("Failure")
+
+#View and decode the content of the webpage
+print(response.content.decode("utf-8"))
+
+
 
 
