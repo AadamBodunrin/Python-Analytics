@@ -31,7 +31,7 @@ print(x)
 
 #Option 2
 import easygui as e
-e.msgbox("To be or not to be", "What Hamlet elocuted")
+e.msgbox("To be or not to be", "What Hamlet elocuted") 
 
 #Create a function that add 1 to any number you call
 def spam(x):
@@ -110,7 +110,8 @@ def search_list(list_of_tuples, value):
 print(search_list(list_of_tuples, "GS"))
 
 inventory = [("widgets", 100), ("spam", 30), ("eggs", 200)]
-def search_list(inventory, value):
+
+"""def search_list(inventory, value):
 	for elements in inventory:
 		if elements[0] == value:
 			return elements[1]
@@ -119,7 +120,7 @@ def search_list(inventory, value):
 y =search_list(inventory, value = "spam")
 print(y)
 z= search_list(inventory, value = "hay")
-print(z)
+print(z) """
 
 dictname = {"AAPL":96.43 , "IONS":38, "GS": 158, "widgets": 100, "spam": 30, "eggs": 200} #Create a dictionary
 print(dictname.keys()) #print the keys of the dictionary
@@ -189,6 +190,112 @@ else:
 
 #View and decode the content of the webpage
 print(response.content.decode("utf-8"))
+
+#Write a function that takes two items, one a url and the other, a string of words that can be found in the url
+def find(url, word):
+	import requests as req
+	page = req.get(url)
+	if page.status_code == 200:
+		pagecode = page.content.decode("utf-8")
+		return pagecode.find(word)
+	else:
+		return "Your action wasn't successful, check the url again"
+
+print(find(url = "https://en.wikipedia.org/wiki/main_page", word = "Did you know"))
+
+#Text conversion using JSON
+import json 
+data_string = '[{"b": [2, 4], "c": 3.0, "a": "A"}]' #Create a string
+python_data = json.loads(data_string)  #Convert to a list using json
+print(python_data)
+
+#View the data types of its contents
+print(type(data_string), type(python_data))
+print(type(python_data[0]), python_data[0])
+print(type(python_data[0]["a"]), python_data[0]["a"])
+print(type(python_data[0]["b"]), python_data[0]["b"])
+print(type(python_data[0]["c"]), python_data[0]["c"])
+
+#Reading a Json 
+import json 
+python_data = json.loads(' "Hello" ')
+print(python_data)
+
+#Converting a json to a string
+datString = json.dumps(python_data)
+print(type(datString), datString)
+
+#To access a url using API Key
+address="Columbia University, New York, NY"
+url="https://maps.googleapis.com/maps/api/geocode/json?address=%s" % (address)  #Add your API Key to the url
+response = requests.get(url).json()
+print(type(response))
+
+#XML
+data_string = """
+<Bookstore>
+   <Book ISBN="ISBN-13:978-1599620787" Price="15.23" Weight="1.5">
+      <Title>New York Deco</Title>
+      <Authors>
+         <Author Residence="New York City">
+            <First_Name>Richard</First_Name>
+            <Last_Name>Berenholtz</Last_Name>
+         </Author>
+      </Authors>
+   </Book>
+   <Book ISBN="ISBN-13:978-1579128562" Price="15.80">
+      <Remark>
+      Five Hundred Buildings of New York and over one million other books are available for Amazon Kindle.
+      </Remark>
+      <Title>Five Hundred Buildings of New York</Title>
+      <Authors>
+         <Author Residence="Beijing">
+            <First_Name>Bill</First_Name>
+            <Last_Name>Harris</Last_Name>
+         </Author>
+         <Author Residence="New York City">
+            <First_Name>Jorg</First_Name>
+            <Last_Name>Brockmann</Last_Name>
+         </Author>
+      </Authors>
+   </Book>
+</Bookstore>
+"""
+
+from lxml import etree    #Import the lxml library and use etree
+root = etree.XML(data_string) #Use etree to store the XML as a variable
+print(root.tag) #Print main xml tag
+print(etree.tostring(root, pretty_print = True).decode("utf-8")) #View the XML file as it is
+
+for element in root.iter(): #using an iterator, print all the element in the xml file and its tag
+	print(element, element.tag)
+
+for child in root: #View the child of the XML file and its tag
+	print(child, child.tag)
+
+
+for element in root.iter("Author"): #Iterate through the Author element, print the first name and last name
+	print(element.find("First_Name").text, element.find("Last_Name").text)
+
+for element in root.findall("Book/Title"): #print the title of book in the title element
+	print(element.text)
+
+for element in root.findall("Book/Authors/Author/Last_Name"):  #using findall, return the only the last name of authors
+	print(element.text)
+
+print(root.find('Book[@Weight = "1.5"]/Authors/Author/First_Name').text) # Print the first name of the Author whose book weighs exactly 1.5
+
+#Print first and last names of all authors who live in New York City Option 1
+
+for element in root.findall('Book/Authors/Author[@Residence="New York City"]'):
+	print(element.find("First_Name").text, element.find("Last_Name").text)
+	
+#Option 2
+books = root.findall("Book")
+for i in range(len(books)):
+    print(root.findall('Book/Authors/Author[@Residence="New York City"]/First_Name')[i].text,
+          root.findall('Book/Authors/Author[@Residence="New York City"]/Last_Name')[i].text)
+
 
 
 

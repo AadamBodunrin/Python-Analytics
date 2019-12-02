@@ -12,7 +12,7 @@ print(type(wiki)) #Find the class type
 print(wiki.status_code) #Check if the command was suucessful
 print(wiki.content.decode("utf-8")) #Print the content"""
 
-
+#Option 1
 def find(url, word):
 	import requests as req
 	page = req.get(url)
@@ -20,3 +20,15 @@ def find(url, word):
 	return pagecode.find(word)
 
 print(find(url = "https://en.wikipedia.org/wiki/main_page", word = "Did you know"))
+
+#Option 2
+def find2(url, word):
+	import requests as req
+	page = req.get(url)
+	if page.status_code == 200:
+		pagecode = page.content.decode("utf-8")
+		return pagecode.find(word)
+	else:
+		return "Your action wasn't successful, check the url again"
+
+print(find2(url = "https://en.wikipedia.org/wiki/main_page", word = "Did you know"))
