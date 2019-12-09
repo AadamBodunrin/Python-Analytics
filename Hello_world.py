@@ -111,7 +111,7 @@ print(search_list(list_of_tuples, "GS"))
 
 inventory = [("widgets", 100), ("spam", 30), ("eggs", 200)]
 
-"""def search_list(inventory, value):
+def search_list(inventory, value):
 	for elements in inventory:
 		if elements[0] == value:
 			return elements[1]
@@ -120,7 +120,7 @@ inventory = [("widgets", 100), ("spam", 30), ("eggs", 200)]
 y =search_list(inventory, value = "spam")
 print(y)
 z= search_list(inventory, value = "hay")
-print(z) """
+print(z) 
 
 dictname = {"AAPL":96.43 , "IONS":38, "GS": 158, "widgets": 100, "spam": 30, "eggs": 200} #Create a dictionary
 print(dictname.keys()) #print the keys of the dictionary
@@ -285,8 +285,8 @@ for element in root.findall("Book/Authors/Author/Last_Name"):  #using findall, r
 
 print(root.find('Book[@Weight = "1.5"]/Authors/Author/First_Name').text) # Print the first name of the Author whose book weighs exactly 1.5
 
-#Print first and last names of all authors who live in New York City Option 1
 
+#Print first and last names of all authors who live in New York City Option 1
 for element in root.findall('Book/Authors/Author[@Residence="New York City"]'):
 	print(element.find("First_Name").text, element.find("Last_Name").text)
 	
@@ -296,7 +296,49 @@ for i in range(len(books)):
     print(root.findall('Book/Authors/Author[@Residence="New York City"]/First_Name')[i].text,
           root.findall('Book/Authors/Author[@Residence="New York City"]/Last_Name')[i].text)
 
+#Getting data from the web
+
+#Import the necessary packages
+import requests
+from bs4 import BeautifulSoup
+
+#use request to access the webpage and parse with lxml
+url = "http://www.epicurious.com/search/Tofu+Chili"
+response = requests.get(url)
+page_soup = BeautifulSoup(response.content, "lxml")
+print(page_soup.prettify())   #print the response in a nice format
+
+print(page_soup.find('a'))      #print the first tags that contains 'a'
+print(page_soup.find_all('a')) #print all  the tags that contains 'a'
+
+print(page_soup.find("div")) #Return the first div in the url
+print(type(page_soup.find("div"))) 
+
+#To find the first article with article content card
+print(page_soup.find('article', class_ = "article-content-card")) 
+
+#or
+print(page_soup.find('article', {'class' : "article-content-card"}))
 
 
+def get_recipes(keywords):
+	recipe_list = list()
+	import requests
+	from bs4 import BeautifulSoup
+	url = "https://www.epicurious.com/search" + keywords
+	response = requests.get(url)
+	if not response.status_code == 200:
+		return recipe_list
+	try:
+		results_page = BeautifulSoup(response.content, 'lxml')
+		recipes = results_page.find_all('article', class_ = "article-content-card")
+		for recipe in recipes:
+			recipe_name = recipes.find('a').get_text()
+			recipe_url ="https://epicurious.com" + recipe.find('a').get("href")
+		print(recipe_name, recipe_url)
+	except:
+		return recipe_list
+	return recipe_list
+		
 
-
+print(get_recipes(keywords = "lamb chops"))
