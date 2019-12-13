@@ -35,3 +35,14 @@ plt.xlim([0, 1])
 plt.ylim([0, 1])
 plt.legend(loc="lower right")
 print(plt.show())
+
+'''from sklearn.naive_bayes import GaussianNB
+nb = GaussianNB()
+nb.fit(x_train, y_train)
+predicted_probas = nb.predict_proba(x_test)
+
+# The magic happens here
+import matplotlib.pyplot as plt
+import scikitplot as skplt
+skplt.metrics.plot_cumulative_gain(y_test, predicted_probas)
+plt.show() '''
