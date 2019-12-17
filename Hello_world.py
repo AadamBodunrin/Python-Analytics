@@ -344,6 +344,46 @@ def get_recipes(keywords):
 print(get_recipes(keywords = "lamb chops"))
 
 
-#Database Basics
+#Database Basics with Python
+#pip Install pymysql first
+
+import pymysql
+
+#Create a connection to your database using your password
+db = pymysql.connect("localhost", "root" , "NewPoint",  db= "schooldb")
+cursor = db.cursor() #create a cursor
+
+
+cursor.execute('SHOW tables;') #Use the execute command to run queries
+print(cursor.fetchone(), "\n")  #use fetchone to return just one item
+
+cursor.execute("SELECT * FROM student;")
+print(cursor.fetchall()) #Use fetchall to return all response from the query
+
+query = """
+SELECT course.name,enrolls_in.score FROM student
+INNER JOIN enrolls_in ON student.ssn = enrolls_in.ssn 
+INNER JOIN course ON course.number = enrolls_in.class
+WHERE f_name = "JOHN";
+"""
+cursor.execute(query)
+result = cursor.fetchall()
+
+#iterate over the result and get items in it.
+print("Course Name", "Score", sep = "\t")
+for thing in result:
+	print(thing[0], thing[1], sep = "\t")
+
+#Insert a new row into the student table
+query = 'INSERT INTO student VALUES ("678-33-2345","Bing","Crossby","2346789870","New York","10001");'
+cursor.execute(query) 
+
+cursor.execute('SELECT * FROM student;')
+print(cursor.fetchall())
+
+db.commit() #To make the new insert permanent on the client side of the database
+
+db.close() #TO close the connection
+
 
 
