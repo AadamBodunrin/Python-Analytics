@@ -147,3 +147,12 @@ SELECT c.name
     INNER JOIN Enrolls_in e ON s.ssn = e.ssn
     INNER JOIN course c ON c.number = e.class
     WHERE s.f_name = "JOHN";
+    
+SELECT h.ticker,
+	company_name,
+    purchase_price,
+    shares,
+    purchase_date
+FROM holdings AS h
+INNER JOIN stocks AS s ON h.ticker = s.ticker
+ORDER BY purchase_date;
